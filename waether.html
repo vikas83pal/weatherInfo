@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+</head>
+<body style="text-align: center;">
+    <h1>Weather Information</h1>
+    <div id="weather"></div>
+    <script>
+        // Replace 'YOUR_API_KEY' with your actual API key from OpenWeatherMap
+        const apiKey = '5eb4005981794939aaa11e739dd980c2';
+        const city = 'Sangareddy'; // You can change this to any city
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+        // Function to fetch weather information
+        async function fetchWeather() {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayWeather(data);
+            } catch (error) {
+                console.error('There has been a problem with your fetch operation:', error);
+            }
+        }
+
+        // Function to display weather information
+        function displayWeather(data) {
+            const weatherDiv = document.getElementById('weather');
+            const weatherInfo = `
+                <h2>Weather in ${data.name}</h2>
+                <p>Temperature: ${data.main.temp}°C</p>
+                <p>Weather: ${data.weather[0].description}</p>
+                <p>Humidity: ${data.main.humidity}%</p>
+                <p>Wind Speed: ${data.wind.speed} m/s</p>
+            `;
+            weatherDiv.innerHTML = weatherInfo;
+        }
+
+        // Fetch weather information when the page loads
+        fetchWeather();
+    </script>
+</body>
+</html>
